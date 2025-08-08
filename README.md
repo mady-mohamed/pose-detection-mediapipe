@@ -95,17 +95,19 @@ This script demonstrates the process of pose detection on a single image.
 ### video_landmarker.py
 
 This script extends the functionality to video processing.
+It also incorporates **exponential smoothing** to stabilize movement or position-based metrics derived from pose landmarks, reducing noise in real-time tracking.
 
 1. It opens a video file using cv2.VideoCapture.
-
 2. It sets up the PoseLandmarker in the same way as the image landmarker, using the IMAGE running mode to process frames individually.
-
 3. It reads the video frame by frame in a loop.
-
 4. For each frame, it follows a similar process as the image landmarker: color conversion, creating an mp.Image object, and calling the detect method.
+5. Movement or position measurements are **smoothed** using the formula:
 
-5. The detected landmarks are drawn on the frame.
+```
+smoothed_value = alpha * current_value + (1 - alpha) * previous_value
+```
+where `alpha` controls responsiveness (higher = more responsive, lower = smoother).
 
-6. The annotated frame is displayed in a window.
-
-7. The loop continues until the video ends or the user presses 'q'.
+6. The detected landmarks are drawn on the frame.
+7. The annotated frame is displayed in a window.
+8. The loop continues until the video ends or the user presses 'q'.
